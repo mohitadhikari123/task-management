@@ -9,10 +9,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Routes imports
-const authRoutes = require('./routes/auth.routes');
-const taskRoutes = require('./routes/task.routes');
-const userRoutes = require('./routes/user.routes');
-const notificationRoutes = require('./routes/notification.routes');
+const authRoutes = require('../../backend-deploy/routes/auth.routes');
+const taskRoutes = require('../../backend-deploy/routes/task.routes');
+const userRoutes = require('../../backend-deploy/routes/user.routes');
+const notificationRoutes = require('../../backend-deploy/routes/notification.routes');
 
 // Initialize express app
 const app = express();
