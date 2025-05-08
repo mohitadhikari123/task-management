@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <!-- Background -->
+  <rect x="0" y="0" width="500" height="400" fill="#ffffff" opacity="0.1"/>
+  
+  <!-- Person at Desk -->
+  <g transform="translate(150, 100)">
+    <!-- Desk -->
+    <rect x="-30" y="120" width="260" height="10" rx="2" fill="#a0e4f1"/>
+    <rect x="0" y="130" width="15" height="70" fill="#a0e4f1"/>
+    <rect x="185" y="130" width="15" height="70" fill="#a0e4f1"/>
+    
+    <!-- Computer -->
+    <rect x="40" y="60" width="120" height="80" rx="4" fill="#004e66"/>
+    <rect x="45" y="65" width="110" height="65" rx="2" fill="#e0f7fa"/>
+    
+    <!-- Screen Content -->
+    <rect x="55" y="75" width="30" height="6" rx="1" fill="#0098c7"/>
+    <rect x="55" y="88" width="90" height="6" rx="1" fill="#9edae5"/>
+    <rect x="55" y="101" width="70" height="6" rx="1" fill="#9edae5"/>
+    <rect x="55" y="114" width="80" height="6" rx="1" fill="#9edae5"/>
+    
+    <!-- Keyboard -->
+    <rect x="70" y="145" width="60" height="10" rx="2" fill="#e0e0e0"/>
+    
+    <!-- Person -->
+    <circle cx="100" cy="20" r="18" fill="#ffdec0"/>
+    <path d="M82 40 C 82 30, 118 30, 118 40 L 118 80 L 82 80 Z" fill="#0098c7"/>
+    <rect x="85" y="80" width="30" height="40" fill="#dcedc8"/>
+    <path d="M100 38 Q 110 65 120 90" stroke="#ffdec0" stroke-width="5" fill="none"/>
+    <path d="M100 38 Q 90 65 80 90" stroke="#ffdec0" stroke-width="5" fill="none"/>
+  </g>
+  
+  <!-- Task Lists -->
+  <g transform="translate(50, 120)">
+    <!-- Task Card 1 -->
+    <rect x="0" y="0" width="60" height="80" rx="4" fill="#ffffff" stroke="#0098c7" stroke-width="2"/>
+    <rect x="10" y="10" width="40" height="6" rx="1" fill="#0098c7"/>
+    <rect x="10" y="22" width="30" height="4" rx="1" fill="#9edae5"/>
+    <rect x="10" y="32" width="35" height="4" rx="1" fill="#9edae5"/>
+    <rect x="10" y="42" width="25" height="4" rx="1" fill="#9edae5"/>
+    <circle cx="15" cy="60" r="5" fill="#4caf50"/>
+  </g>
+  
+  <g transform="translate(380, 150)">
+    <!-- Task Card 2 -->
+    <rect x="0" y="0" width="60" height="80" rx="4" fill="#ffffff" stroke="#0098c7" stroke-width="2"/>
+    <rect x="10" y="10" width="40" height="6" rx="1" fill="#0098c7"/>
+    <rect x="10" y="22" width="30" height="4" rx="1" fill="#9edae5"/>
+    <rect x="10" y="32" width="35" height="4" rx="1" fill="#9edae5"/>
+    <rect x="10" y="42" width="25" height="4" rx="1" fill="#9edae5"/>
+    <circle cx="15" cy="60" r="5" fill="#ff9800"/>
+  </g>
+  
+  <!-- Decorative Elements -->
+  <circle cx="50" cy="50" r="15" fill="#e0f7fa"/>
+  <circle cx="430" cy="70" r="20" fill="#e0f7fa"/>
+  <circle cx="380" cy="350" r="25" fill="#e0f7fa"/>
+  <circle cx="90" cy="330" r="15" fill="#e0f7fa"/>
+  
+  <!-- Connection Lines -->
+  <path d="M120 160 Q 170 120, 220 120" stroke="#0098c7" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
+  <path d="M370 180 Q 310 150, 270 150" stroke="#0098c7" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
+</svg> 
