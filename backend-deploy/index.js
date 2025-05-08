@@ -25,7 +25,7 @@ app.use(morgan('dev'));
 
 // CORS Configuration - update for production
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
 
