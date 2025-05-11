@@ -161,7 +161,7 @@ export default function EditTask() {
                   justifyContent: 'space-between',
                 }}>
                   {/* Left Column */}
-                  <div className="col-md-6 pe-md-4" style={{
+                  <div className="col-md-6 pe-md-4 left-column" style={{
                     width: '48%'
                   }}>
                     <div className="form-group mb-4">
@@ -223,7 +223,7 @@ export default function EditTask() {
                   </div>
                   
                   {/* Right Column */}
-                  <div className="col-md-6 ps-md-4" style={{
+                  <div className="col-md-6 ps-md-4 right-column " style={{
                     width: '48%', 
                     display: 'flex',
                     flexDirection: 'column',
@@ -298,7 +298,7 @@ export default function EditTask() {
                   </div>
                 </div>
                 
-                <div className="d-flex justify-content-between mt-4">
+                <div className="d-flex justify-content-between mt-4 gap-3 flex-wrap">
                   <Link
                     href={`/tasks/${params.id}`}
                     className="btn btn-secondary"

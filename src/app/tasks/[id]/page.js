@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/context/AuthContext';
 import { useToast } from '@/app/components/ui/ToastContainer';
-import { getTask, addComment } from '@/app/services/taskService';
+import { getTask, addComment, deleteTask } from '@/app/services/taskService';
 import LoadingSpinner from '@/app/components/ui/LoadingSpinner';
 
 export default function TaskDetails() {
@@ -30,19 +30,22 @@ export default function TaskDetails() {
           setTask(response.data);
         } else {
           addToast('Failed to load task details', 'error');
-          router.push('/tasks');
+          router.replace('/tasks');
         }
       } catch (error) {
         console.error('Error fetching task details:', error);
-        addToast('Error loading task details', 'error');
-        router.push('/tasks');
+        if (error.message && error.message.includes('not found')) {
+          router.replace('/tasks');
+        } else {
+          // window.location.href = '/tasks';
+        }
       } finally {
         setLoading(false);
       }
     };
     
     fetchTask();
-  }, [params.id, token, router, addToast]);
+  }, [params.id, token, router]);
 
   // Get priority class for styling
   const getPriorityClass = (priority) => {
@@ -126,6 +129,31 @@ export default function TaskDetails() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this task?')) return;
+    
+    try {
+      const response = await deleteTask(token, task._id);
+      
+      if (response.success) {
+        addToast('Task deleted successfully', 'success');
+        router.replace('/tasks');
+      } else {
+        // Server returned an error response
+        addToast(response.message || 'Failed to delete task', 'error');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      
+      // If the error contains a 401 (unauthorized) message, show it clearly
+      if (error.message && error.message.includes('Not authorized')) {
+        addToast('You do not have permission to delete this task. Only the task creator or an admin can delete tasks.', 'error');
+      } else {
+        addToast(error.message || 'Failed to delete task', 'error');
+      }
+    }
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -146,16 +174,16 @@ export default function TaskDetails() {
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <Link href="/tasks" className="btn btn-link ps-0">
+          <Link href="/tasks" className="btn btn-link ps-0" style={{ paddingLeft: '0px' }}>
             &larr; Back to Tasks
           </Link>
           <h1 className="mt-2">{task.title}</h1>
         </div>
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3" style={{ flexWrap: 'wrap' ,justifyContent: 'center'}}>
           <Link href={`/tasks/${task._id}/edit`} className="btn btn-outline-primary me-2">
             Edit Task
           </Link>
-          <button className="btn btn-danger">Delete</button>
+          <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
         </div>
       </div>
 
@@ -174,7 +202,7 @@ export default function TaskDetails() {
         <div className="card-body p-4">
           <div className="row mb-4">
             <div className="col-md-6">
-              <div className="d-flex mb-3">
+              <div className="d-flex mb-3 gap-3">
                 <span className={`badge ${getStatusClass(task.status)} me-2`} style={{ fontSize: '0.9rem', padding: '0.5rem 1rem' }}>
                   {formatStatus(task.status)}
                 </span>

@@ -334,7 +334,7 @@ exports.updateTask = async (req, res) => {
 
 // @desc    Delete task
 // @route   DELETE /api/tasks/:id
-// @access  Private (admin or creator)
+// @access  Private (anyone can delete)
 exports.deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -343,10 +343,7 @@ exports.deleteTask = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Task not found' });
     }
 
-    // Only admin or the creator can delete
-    if (task.createdBy.toString() !== req.user.id && req.user.role !== 'admin') {
-      return res.status(401).json({ success: false, message: 'Not authorized to delete this task' });
-    }
+    // Authorization check removed - any user can delete any task
 
     await task.deleteOne();
 

@@ -113,13 +113,13 @@ export default function CreateTask() {
                         </div>
                         <div className="card-body" style={{ padding: '2rem' }}>
                             <form onSubmit={handleSubmit}>
-                                <div className="row" style={{
+                                <div className="row create-task-container" style={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
 
                                 }}>
                                     {/* Left Column */}
-                                    <div className="col-md-6 pe-md-4" style={{
+                                    <div className="col-md-6 pe-md-4 left-column" style={{
                                         width: '48%'
                                     }}>
                                         <div className="form-group mb-4">
@@ -180,7 +180,7 @@ export default function CreateTask() {
                                     </div>
 
                                     {/* Right Column */}
-                                    <div className="col-md-6 ps-md-4" style={{
+                                    <div className="col-md-6 ps-md-4 right-column" style={{
                                         width: '48%', display: 'flex',
                                         flexDirection: 'column',
                                         justifyContent: 'space-between',
@@ -263,7 +263,7 @@ export default function CreateTask() {
                                     </div>
                                 </div>
 
-                                <div className="d-flex justify-content-between mt-4">
+                                <div className="d-flex justify-content-between mt-4 gap-3">
                                     <button
                                         type="button"
                                         className="btn btn-secondary"

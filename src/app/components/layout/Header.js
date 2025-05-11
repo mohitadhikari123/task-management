@@ -47,9 +47,9 @@ const Header = () => {
     // Initialize dark mode preference
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    // Add click outside handler for mobile menu
+    // Add click outside handler for mobile menu and notifications
     const handleClickOutside = (event) => {
-      // Only process if the mobile menu is open
+      // Process if the mobile menu is open
       if (isMobileMenuOpen) {
         // Check if the click was outside the mobile menu container
         const mobileMenuContainer = document.querySelector('.mobile-menu-container');
@@ -61,6 +61,20 @@ const Header = () => {
           setIsMobileMenuOpen(false);
         }
       }
+      
+      // Process if the notifications panel is open
+      if (isNotificationsOpen) {
+        const notificationButton = document.querySelector('.notification-button');
+        const notificationPanel = document.querySelector('.position-absolute.end-0.mt-2.card-glass');
+        const mobileNotificationPanel = document.querySelector('.mobile-notifications-container');
+        
+        // Close if click is outside the notification button and panels
+        if ((!notificationButton || !notificationButton.contains(event.target)) &&
+            (!notificationPanel || !notificationPanel.contains(event.target)) &&
+            (!mobileNotificationPanel || !mobileNotificationPanel.contains(event.target))) {
+          setIsNotificationsOpen(false);
+        }
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -69,7 +83,7 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isNotificationsOpen]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -79,7 +93,12 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const toggleNotifications = async () => {
+  const toggleNotifications = async (e) => {
+    // If an event is passed, prevent it from bubbling up
+    if (e) {
+      e.stopPropagation();
+    }
+    
     setIsNotificationsOpen(!isNotificationsOpen);
     if (!isNotificationsOpen && user && token) {
       setNotificationsLoading(true);
@@ -217,8 +236,8 @@ const Header = () => {
                 {/* Notifications */}
                 <div className="position-relative mr-4">
                   <button
-                    onClick={toggleNotifications}
-                    className="btn btn-glass rounded-circle p-2 position-relative"
+                    onClick={(e) => toggleNotifications(e)}
+                    className="btn btn-glass rounded-circle p-2 position-relative notification-button"
                     aria-expanded={isNotificationsOpen}
                     style={{
                       width: '40px',
@@ -382,41 +401,78 @@ const Header = () => {
             zIndex: 1000,
             animation: 'fadeIn 0.3s ease',
           }}>
-            <div className="mobile-menu-container d-sm-none" style={{
+            <div className="mobile-menu-container d-sm-none card-glass" style={{
               position: 'fixed',
               top: 0,
               right: 0,
               width: '75%',
               maxWidth: '300px',
               height: '100vh',
-              backgroundColor: 'var(--color-background)',
               boxShadow: 'var(--box-shadow)',
               padding: '2rem 1rem',
               zIndex: 1001,
               animation: 'slideInRight 0.3s ease',
               overflowY: 'auto',
             }}>
-              <div className="mobile-menu-header d-flex justify-content-between align-items-center mb-4">
+              <div className="mobile-menu-header d-flex justify-content-between align-items-center mb-4" style={{
+                marginTop: '-11px',
+                marginRight: '12px'
+              }}>
                 <h3 className="m-0 font-weight-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{
                   background: 'linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   fontSize: '1.2rem'
                 }}>Menu</h3>
-                <button 
-                  onClick={toggleMobileMenu} 
-                  className="btn btn-glass rounded-circle p-2"
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'var(--glass-background)',
-                  }}
-                >
-                  <span>✕</span>
-                </button>
+                <div className="d-flex align-items-center">
+                  {user && (
+                    <div className="position-relative mr-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleNotifications(e);
+                        }}
+                        className="btn btn-glass rounded-circle p-2 position-relative notification-button"
+                        aria-expanded={isNotificationsOpen}
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: 'var(--glass-background)',
+                          overflow: 'visible'
+                        }}
+                      >
+                        <span>🔔</span>
+                        
+                        {notifications.length > 0 && (
+                          <span className="badge badge-danger position-absolute" style={{
+                            top: '-5px',
+                            right: '-5px',
+                            transform: 'scale(0.8)'
+                          }}>
+                            {notifications.length}
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  )}
+                  <button 
+                    onClick={toggleMobileMenu} 
+                    className="btn btn-glass rounded-circle p-2"
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'var(--glass-background)',
+                    }}
+                  >
+                    <span>✕</span>
+                  </button>
+                </div>
               </div>
 
               {user ? (
@@ -540,6 +596,101 @@ const Header = () => {
           </div>
         )}
       </div>
+
+      {/* Mobile Notifications Panel - Only shown when mobile notifications are open */}
+      {isNotificationsOpen && (
+        <div className="mobile-notifications-overlay d-sm-none" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          zIndex: 1050,
+          animation: 'fadeIn 0.3s ease',
+        }}>
+          <div className="mobile-notifications-container card-glass" style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '90%',
+            maxWidth: '350px',
+            maxHeight: '80vh',
+            borderRadius: 'var(--border-radius)',
+            boxShadow: 'var(--box-shadow)',
+            zIndex: 1051,
+            animation: 'fadeInDown 0.3s ease',
+            overflowY: 'auto',
+          }}>
+            <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+              <h3 className="font-weight-bold mb-0">Notifications</h3>
+              <button
+                onClick={toggleNotifications}
+                className="btn-glass rounded-circle p-1"
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  fontSize: '1.2rem',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div style={{ maxHeight: 'calc(80vh - 60px)', overflowY: 'auto' }}>
+              {notificationsLoading ? (
+                <div className="p-4 text-center">
+                  <div className="mb-3" style={{ fontSize: '2rem' }}>⏳</div>
+                  <p className="text-muted mb-0">Loading notifications...</p>
+                </div>
+              ) : notificationsError ? (
+                <div className="p-4 text-center">
+                  <div className="mb-3" style={{ fontSize: '2rem' }}>⚠️</div>
+                  <p className="text-danger mb-0">{notificationsError}</p>
+                </div>
+              ) : notifications.length === 0 ? (
+                <div className="p-4 text-center">
+                  <div className="mb-3" style={{ fontSize: '2rem' }}>🔔</div>
+                  <p className="text-muted mb-0">No new notifications</p>
+                </div>
+              ) : (
+                notifications.map((notification) => (
+                  <div
+                    key={notification._id}
+                    className="p-3 border-bottom hover-shadow transition-all"
+                    style={{ transition: 'all 0.2s ease', cursor: notification.task ? 'pointer' : 'default' }}
+                    onClick={() => handleNotificationClick(notification)}
+                  >
+                    <p className="font-weight-medium mb-1">{notification.title}</p>
+                    <p className="small text-muted mb-1">{notification.message}</p>
+                    <p className="small text-muted mb-0 d-flex justify-content-between">
+                      <span>{new Date(notification.createdAt).toLocaleString()}</span>
+                      <button
+                        className="btn-link small p-0 border-0 bg-transparent"
+                        onClick={e => { e.stopPropagation(); handleMarkRead(notification._id); }}
+                      >Mark read</button>
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+            
+            {notifications.length > 0 && !notificationsLoading && !notificationsError && (
+              <div className="p-2 text-center border-top">
+                <button className="btn btn-sm btn-link text-decoration-none" onClick={handleMarkAllRead}>
+                  Mark all as read
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .nav-link {

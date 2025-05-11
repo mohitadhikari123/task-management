@@ -48,11 +48,11 @@ export default function Home() {
                 A powerful, collaborative platform for teams to create, assign, track, and manage tasks efficiently.
               </p>
               {user ? (
-                <Link href="/dashboard" className="btn btn-primary btn-lg hover-lift">
+                <Link href="/dashboard" className="btn mb-4 btn-primary btn-lg hover-lift">
                   Go to Dashboard
                 </Link>
               ) : (
-                <div className="mt-4 d-flex flex-wrap gap-3">
+                <div className="mt-4 mb-4 d-flex flex-wrap gap-3">
                   <Link href="/register" className="btn btn-primary btn-lg hover-lift">
                     Get Started
                   </Link>

@@ -138,6 +138,7 @@ export default function Tasks() {
                   placeholder="Search tasks by title or description..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  suppressHydrationWarning
                   style={{ backgroundColor: '#242424', color: '#e0e0e0', border: '1px solid rgba(255,255,255,0.1)' }}
                 />
                 <button 
@@ -147,6 +148,7 @@ export default function Tasks() {
                     background: 'linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
                     border: 'none'
                   }}
+                  suppressHydrationWarning
                 >
                   Search
                 </button>
@@ -156,6 +158,7 @@ export default function Tasks() {
                     type="button"
                     onClick={clearSearch}
                     style={{ backgroundColor: '#333', border: 'none' }}
+                    suppressHydrationWarning
                   >
                     Clear
                   </button>
@@ -250,6 +253,7 @@ export default function Tasks() {
                     value={statusFilter}
                     onChange={handleStatusFilterChange}
                     disabled={isSearching}
+                    suppressHydrationWarning
                     style={{ backgroundColor: '#242424', color: '#e0e0e0', border: '1px solid rgba(255,255,255,0.1)' }}
                   >
                     <option value="all">All Statuses</option>
@@ -269,6 +273,7 @@ export default function Tasks() {
                     value={priorityFilter}
                     onChange={handlePriorityFilterChange}
                     disabled={isSearching}
+                    suppressHydrationWarning
                     style={{ backgroundColor: '#242424', color: '#e0e0e0', border: '1px solid rgba(255,255,255,0.1)' }}
                   >
                     <option value="all">All Priorities</option>
@@ -289,6 +294,7 @@ export default function Tasks() {
                     onChange={handleDueDateFilterChange}
                     disabled={isSearching}
                     style={{ backgroundColor: '#242424', color: '#e0e0e0', border: '1px solid rgba(255,255,255,0.1)' }}
+                    suppressHydrationWarning
                   >
                     <option value="all">All Due Dates</option>
                     <option value="today">Due Today</option>
